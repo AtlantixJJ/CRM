@@ -77,7 +77,9 @@ class CRM(nn.Module):
 
         weight = None
         if self.geo_type == "flex":
-            grid_feat = torch.index_select(input=dec_verts, index=self.renderer.flexicubes.indices.reshape(-1),dim=1)
+            grid_feat = torch.index_select(
+                input=dec_verts,
+                index=self.renderer.flexicubes.indices.reshape(-1),dim=1)
             grid_feat = grid_feat.reshape(dec_verts.shape[0], self.renderer.flexicubes.indices.shape[0], self.renderer.flexicubes.indices.shape[1] * dec_verts.shape[-1])
             weight = self.weightMlp(grid_feat)
             weight = weight * 0.1
@@ -86,7 +88,8 @@ class CRM(nn.Module):
         if self.spob:
             pred_sdf = pred_sdf + self.radius - torch.sqrt((tet_verts**2).sum(-1))
 
-        _, verts, faces = self.renderer(data, pred_sdf, deformation, tet_verts, tet_indices, weight= weight)
+        _, verts, faces = self.renderer(data, pred_sdf, deformation, tet_verts, tet_indices, weight=weight)
+
         return verts[0].unsqueeze(0), faces[0].int()
 
     def export_mesh(self, data, out_dir, ind, device=None, tri_fea_2 = None):

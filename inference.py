@@ -60,7 +60,6 @@ def generate3d(model, rgb, ccm, device):
 
         data_config['verts'] = verts[0]
         data_config['faces'] = faces
-        
 
     from kiui.mesh_utils import clean_mesh
     verts, faces = clean_mesh(data_config['verts'].squeeze().cpu().numpy().astype(np.float32), data_config['faces'].squeeze().cpu().numpy().astype(np.int32), repair = False, remesh=False, remesh_size=0.005)
@@ -82,7 +81,6 @@ def generate3d(model, rgb, ccm, device):
 
         with zipfile.ZipFile(mesh_path_obj+'.zip', 'w') as myzip:
             myzip.write(mesh_path_obj+'.obj', mesh_path_obj.split("/")[-1]+'.obj')
-            myzip.write(mesh_path_obj+'.png', mesh_path_obj.split("/")[-1]+'.png')
             myzip.write(mesh_path_obj+'.mtl', mesh_path_obj.split("/")[-1]+'.mtl')
 
     end_time = time.time()
